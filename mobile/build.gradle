@@ -29,4 +29,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     wearApp project(':wear')
     implementation 'com.google.android.gms:play-services-wearable:+'
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.1'
+    compile 'com.joanzapata.iconify:android-iconify-entypo:2.2.1'
+    compile 'com.joanzapata.iconify:android-iconify-typicons:2.2.1'
+    compile 'com.joanzapata.iconify:android-iconify-material:2.2.1'
+    compile 'com.joanzapata.iconify:android-iconify-material-community:2.2.1'
+    compile 'com.joanzapata.iconify:android-iconify-meteocons:2.2.1'
+    compile 'com.joanzapata.iconify:android-iconify-weathericons:2.2.1'
+    compile 'com.joanzapata.iconify:android-iconify-simplelineicons:2.2.1'
+    compile 'com.joanzapata.iconify:android-iconify-ionicons:2.2.1'
+    compile 'com.joanzapata.iconify:android-iconify:2.2.2'
 }
