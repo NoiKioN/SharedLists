@@ -21,6 +21,10 @@ jobs:
                 jars
                     -{{ checksum "build.gradle" }}
                     -{{ checksum "mobile/build.gradle" }}
+                    
+        - run:
+            name: Chmod permissions
+            command: sudo chmod +x ./gradlew
 
         - run:
             name: Download Dependencies
