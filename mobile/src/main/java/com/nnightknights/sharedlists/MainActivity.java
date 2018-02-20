@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.joanzapata.iconify.Icon;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.EntypoModule;
@@ -48,7 +47,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setBackgroundColor(getResources().getColor(R.color.colorAccent, getTheme()));
+        fab.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent, getTheme()));
+        fab.setImageDrawable(new IconDrawable(getApplicationContext(), FontAwesomeIcons.fa_plus).colorRes(R.color.colorPrimary));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
