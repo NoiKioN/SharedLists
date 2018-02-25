@@ -2,21 +2,17 @@ package com.nnightknights.sharedlists;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.nnightknights.sharedlists.list.database.ListsContract;
-import com.nnightknights.sharedlists.list.database.SQListHelper;
+import com.nnightknights.sharedlists.list.database.DatabaseManager;
 
-import java.sql.Array;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -33,7 +29,7 @@ public class TestActivity extends AppCompatActivity {
         getIntent().removeExtra("TestMessage");
 
         new AsyncTask(){
-            private SQListHelper databaseHelper = new SQListHelper(getApplicationContext());
+            private DatabaseManager databaseHelper = new DatabaseManager(getApplicationContext());
             private SQLiteDatabase database;
 
             @Override
@@ -62,7 +58,7 @@ public class TestActivity extends AppCompatActivity {
 
         try {
             testText.setText(String.valueOf(new AsyncTask() {
-                private SQListHelper databaseHelper = new SQListHelper(getApplicationContext());
+                private DatabaseManager databaseHelper = new DatabaseManager(getApplicationContext());
                 private SQLiteDatabase database;
 
                 @Override
