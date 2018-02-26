@@ -17,10 +17,10 @@ public final class ListsContract {
         public static final String TABLE_NAME = "list_objects",
         COLUMN_NAME_TITLE = "title",
         COLUMN_NAME_DESCRIPTION = "description",
-        COLUMNN_NAME_DATE_CREATED = "date_created",
-        COLUMN_NAME_DATE_UPDATED = "date_updated",
         COLUMN_NAME_OBJECT_TYPE = "type",
-        COLUMN_NAME_OBJECT_CONTENT = "content";
+        COLUMN_NAME_OBJECT_CONTENT = "content",
+        COLUMN_NAME_DATE_CREATED = "date_created",
+        COLUMN_NAME_DATE_UPDATED = "date_updated";
     }
 
     public static class ListContents implements BaseColumns{

@@ -2,16 +2,20 @@ package com.nnightknights.sharedlists;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.nnightknights.sharedlists.list.database.ListsContract;
-import com.nnightknights.sharedlists.list.database.SQListHelper;
+import com.nnightknights.sharedlists.list.database.DatabaseManager;
 
-import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class TestActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
@@ -20,8 +24,12 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+        final TextView testText = findViewById(R.id.testText);
+        testText.setText(getIntent().getStringExtra("TestMessage"));
+        getIntent().removeExtra("TestMessage");
+
         new AsyncTask(){
-            private SQListHelper databaseHelper = new SQListHelper(getApplicationContext());
+            private DatabaseManager databaseHelper = new DatabaseManager(getApplicationContext());
             private SQLiteDatabase database;
 
             @Override
@@ -32,8 +40,8 @@ public class TestActivity extends AppCompatActivity {
             @Override
             protected Object doInBackground(Object[] objects) {
                 ContentValues values = new ContentValues();
-                values.put(ListsContract.Lists.COLUMN_NAME_TITLE, "Test");
-                values.put(ListsContract.Lists.COLUMN_NAME_DESCRIPTION, "Test");
+                values.put(ListsContract.Lists.COLUMN_NAME_TITLE, "Test title");
+                values.put(ListsContract.Lists.COLUMN_NAME_DESCRIPTION, "Test description.");
                 values.put(ListsContract.Lists.COLUMN_NAME_DATE_CREATED, Calendar.getInstance().getTimeInMillis());
                 values.put(ListsContract.Lists.COLUMN_NAME_DATE_UPDATED, Calendar.getInstance().getTimeInMillis());
 
@@ -46,27 +54,54 @@ public class TestActivity extends AppCompatActivity {
                 database.close();
                 super.onPostExecute(o);
             }
-        };
+        }.execute();
 
-        new AsyncTask(){
-            private SQListHelper databaseHelper = new SQListHelper(getApplicationContext());
-            private SQLiteDatabase database;
+        try {
+            testText.setText(String.valueOf(new AsyncTask() {
+                private DatabaseManager databaseHelper = new DatabaseManager(getApplicationContext());
+                private SQLiteDatabase database;
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                database = databaseHelper.getReadableDatabase();
-            }
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                return null;
-            }
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    database = databaseHelper.getReadableDatabase();
+                }
 
-            @Override
-            protected void onPostExecute(Object o) {
-                database.close();
-                super.onPostExecute(o);
-            }
-        };
+                @Override
+                protected Object doInBackground(Object[] objects) {
+                    Cursor cursor = database.query(ListsContract.Lists.TABLE_NAME,
+                            new String[]{ListsContract.Lists.COLUMN_NAME_TITLE},
+                            ListsContract.Lists._ID + " = ?",
+                            new String[]{"1"},
+                            null,
+                            null,
+                            null);
+                    List names = new ArrayList<String>();
+                    while(cursor.moveToNext()){
+                        names.add(cursor.getString(
+                                cursor.getColumnIndexOrThrow(ListsContract.Lists.COLUMN_NAME_TITLE)
+                        ));
+                    }
+                    cursor.close();
+                    String rName = "none";
+                    for (Object name : names.toArray()){
+                        if(name != null){
+                            rName = (String) name;
+                            break;
+                        }
+                    }
+                    return rName;
+                }
+
+                @Override
+                protected void onPostExecute(Object o) {
+                    database.close();
+                    super.onPostExecute(o);
+                }
+            }.execute().get()));
+        }
+        catch (Exception e){
+            Log.d("async#2", "Something went wrong.", e);
+        }
     }
 }
