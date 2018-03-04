@@ -6,11 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
-import com.nnightknights.sharedlists.list.interfaces.List;
+import com.nnightknights.sharedlists.list.interfaces.ListI;
 
 import java.util.ArrayList;
 
-public class DatabaseReader extends AsyncTask<String, Integer, List> {
+public class DatabaseReader extends AsyncTask<QueryData, Integer, ListI[]> {
     DatabaseManager databaseManager;
     SQLiteDatabase listsDatabase;
     ProgressBar progressBar;
@@ -42,26 +42,44 @@ public class DatabaseReader extends AsyncTask<String, Integer, List> {
     }
 
     @Override
-    protected List doInBackground(String... strings) {
-        Cursor cursor = listsDatabase.query(ListsContract.Lists.TABLE_NAME,
-                new String[]{ListsContract.Lists.COLUMN_NAME_TITLE},
-                ListsContract.Lists._ID + " = ?",
-                new String[]{"1"},
-                null,
-                null,
-                null);
-        java.util.List names = new ArrayList<String>();
-        while(cursor.moveToNext()){
-            names.add(cursor.getString(
-                    cursor.getColumnIndexOrThrow(ListsContract.Lists.COLUMN_NAME_TITLE)
-            ));
+    protected ListI[] doInBackground(QueryData... dataIn) {
+        QueryData queryData = dataIn[0];
+
+        Cursor cursor = null;
+        if(queryData.getQueryType() == QueryType.TYPE_NORMAL) {
+            cursor = listsDatabase.query(
+                    queryData.getDistinct(),
+                    queryData.getTableName(),
+                    queryData.getColumnNames(),
+                    queryData.getSelection(),
+                    queryData.getSelectionArguments(),
+                    queryData.getGroupBy(),
+                    queryData.getHaving(),
+                    queryData.getOrderBy(),
+                    queryData.getLimit());
+
+            java.util.List<String[]> dataOut = new ArrayList<>();
+            while(cursor.moveToNext()){
+                String[] data = new String[queryData.getColumnNames().length];
+
+                for (int index = 0; index < data.length; index++){
+                    data[index] = cursor.getString(cursor.getColumnIndexOrThrow(queryData.getColumnNames()[index]));
+                }
+
+                dataOut.add(data);
+            }
         }
-        cursor.close();
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
         return null;
     }
 
     @Override
-    protected void onPostExecute(List list) {
-        super.onPostExecute(list);
+    protected void onPostExecute(ListI[] listI) {
+        listsDatabase.close();
+        super.onPostExecute(listI);
     }
 }
