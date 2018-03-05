@@ -1,13 +1,16 @@
 package com.nnightknights.sharedlists.list.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
-import com.nnightknights.sharedlists.list.interfaces.List;
+import com.nnightknights.sharedlists.list.interfaces.ListI;
 
-public class DatabaseReader extends AsyncTask<String, Integer, List> {
+import java.util.ArrayList;
+
+public class DatabaseReader extends AsyncTask<QueryData, Integer, ListI[]> {
     DatabaseManager databaseManager;
     SQLiteDatabase listsDatabase;
     ProgressBar progressBar;
@@ -39,13 +42,44 @@ public class DatabaseReader extends AsyncTask<String, Integer, List> {
     }
 
     @Override
-    protected List doInBackground(String... strings) {
-        return null;
+    protected ListI[] doInBackground(QueryData... dataIn) {
+        QueryData queryData = dataIn[0];
 
+        Cursor cursor = null;
+        if(queryData.getQueryType() == QueryType.TYPE_NORMAL) {
+            cursor = listsDatabase.query(
+                    queryData.getDistinct(),
+                    queryData.getTableName(),
+                    queryData.getColumnNames(),
+                    queryData.getSelection(),
+                    queryData.getSelectionArguments(),
+                    queryData.getGroupBy(),
+                    queryData.getHaving(),
+                    queryData.getOrderBy(),
+                    queryData.getLimit());
+
+            java.util.List<String[]> dataOut = new ArrayList<>();
+            while(cursor.moveToNext()){
+                String[] data = new String[queryData.getColumnNames().length];
+
+                for (int index = 0; index < data.length; index++){
+                    data[index] = cursor.getString(cursor.getColumnIndexOrThrow(queryData.getColumnNames()[index]));
+                }
+
+                dataOut.add(data);
+            }
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        return null;
     }
 
     @Override
-    protected void onPostExecute(List list) {
-        super.onPostExecute(list);
+    protected void onPostExecute(ListI[] listI) {
+        listsDatabase.close();
+        super.onPostExecute(listI);
     }
 }
