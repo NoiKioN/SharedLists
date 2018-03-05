@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.nnightknights.sharedlists.list.database.ListsContract;
+import com.nnightknights.sharedlists.list.database.ListsDatabase;
 import com.nnightknights.sharedlists.list.database.DatabaseManager;
 
 import java.util.ArrayList;
@@ -40,12 +40,12 @@ public class TestActivity extends AppCompatActivity {
             @Override
             protected Object doInBackground(Object[] objects) {
                 ContentValues values = new ContentValues();
-                values.put(ListsContract.Lists.COLUMN_NAME_TITLE, "Test title");
-                values.put(ListsContract.Lists.COLUMN_NAME_DESCRIPTION, "Test description.");
-                values.put(ListsContract.Lists.COLUMN_NAME_DATE_CREATED, Calendar.getInstance().getTimeInMillis());
-                values.put(ListsContract.Lists.COLUMN_NAME_DATE_UPDATED, Calendar.getInstance().getTimeInMillis());
+                values.put(ListsDatabase.Lists.COLUMN_NAME_TITLE, "Test title");
+                values.put(ListsDatabase.Lists.COLUMN_NAME_DESCRIPTION, "Test description.");
+                values.put(ListsDatabase.Lists.COLUMN_NAME_DATE_CREATED, Calendar.getInstance().getTimeInMillis());
+                values.put(ListsDatabase.Lists.COLUMN_NAME_DATE_UPDATED, Calendar.getInstance().getTimeInMillis());
 
-                long newRowId = database.insert(ListsContract.Lists.TABLE_NAME, null, values);
+                long newRowId = database.insert(ListsDatabase.Lists.TABLE_NAME, null, values);
                 return null;
             }
 
@@ -69,9 +69,9 @@ public class TestActivity extends AppCompatActivity {
 
                 @Override
                 protected Object doInBackground(Object[] objects) {
-                    Cursor cursor = database.query(ListsContract.Lists.TABLE_NAME,
-                            new String[]{ListsContract.Lists.COLUMN_NAME_TITLE},
-                            ListsContract.Lists._ID + " = ?",
+                    Cursor cursor = database.query(ListsDatabase.Lists.TABLE_NAME,
+                            new String[]{ListsDatabase.Lists.COLUMN_NAME_TITLE},
+                            ListsDatabase.Lists._ID + " = ?",
                             new String[]{"1"},
                             null,
                             null,
@@ -79,7 +79,7 @@ public class TestActivity extends AppCompatActivity {
                     List names = new ArrayList<String>();
                     while(cursor.moveToNext()){
                         names.add(cursor.getString(
-                                cursor.getColumnIndexOrThrow(ListsContract.Lists.COLUMN_NAME_TITLE)
+                                cursor.getColumnIndexOrThrow(ListsDatabase.Lists.COLUMN_NAME_TITLE)
                         ));
                     }
                     cursor.close();
