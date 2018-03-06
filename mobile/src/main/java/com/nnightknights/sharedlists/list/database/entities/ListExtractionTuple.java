@@ -4,10 +4,10 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "Lists")
-public class ListsEntity {
+@Entity(tableName = "lists")
+public class ListExtractionTuple {
     @PrimaryKey
-    @ColumnInfo(name = "id", index = true)
+    @ColumnInfo(name = "id")
     private int id;
 
     @ColumnInfo(name = "title", index = true)
@@ -18,9 +18,6 @@ public class ListsEntity {
 
     @ColumnInfo(name = "tags")
     private String tags;
-
-    @ColumnInfo(name = "favorite", index = true)
-    private boolean favorite;
 
     @ColumnInfo(name = "date_created", index = true)
     private long dateCreated;
@@ -58,14 +55,6 @@ public class ListsEntity {
 
     public void setTags(String tags) {
         this.tags = tags;
-    }
-
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
     }
 
     public long getDateCreated() {

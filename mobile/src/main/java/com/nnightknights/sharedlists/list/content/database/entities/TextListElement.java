@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "text_list_elements", indices = {})
-public class TextListElementEntity {
+public class TextListElement {
     @PrimaryKey
     @ColumnInfo(name = "id", index = true)
     private int id;

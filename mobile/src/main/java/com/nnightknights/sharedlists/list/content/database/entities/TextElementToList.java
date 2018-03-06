@@ -5,16 +5,16 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.nnightknights.sharedlists.list.database.entities.ListsEntity;
+import com.nnightknights.sharedlists.list.database.entities.List;
 
 @Entity(tableName = "text_element_to_list")
-public class TextElementToListEntity {
+public class TextElementToList {
     @PrimaryKey
     @ColumnInfo(name = "id")
     private int id;
 
     @ForeignKey(
-            entity = ListsEntity.class,
+            entity = List.class,
             parentColumns = "id",
             childColumns = "list_id",
             onDelete = ForeignKey.CASCADE,
@@ -23,7 +23,7 @@ public class TextElementToListEntity {
     private int listID;
 
     @ForeignKey(
-            entity = TextListElementEntity.class,
+            entity = TextListElement.class,
             parentColumns = "id",
             childColumns = "list_element_id",
             onDelete = ForeignKey.CASCADE,
