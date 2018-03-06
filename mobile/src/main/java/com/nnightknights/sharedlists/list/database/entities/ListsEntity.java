@@ -2,16 +2,15 @@ package com.nnightknights.sharedlists.list.database.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "Lists", indices = {@Index("title"), @Index("description"), @Index()})
+@Entity(tableName = "Lists")
 public class ListsEntity {
     @PrimaryKey
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "id", index = true)
     private int id;
 
-    @ColumnInfo(name = "title")
+    @ColumnInfo(name = "title", index = true)
     private String title;
 
     @ColumnInfo(name = "description")
@@ -20,13 +19,13 @@ public class ListsEntity {
     @ColumnInfo(name = "tags")
     private String tags;
 
-    @ColumnInfo(name = "favorite")
+    @ColumnInfo(name = "favorite", index = true)
     private boolean favorite;
 
-    @ColumnInfo(name = "date_created")
+    @ColumnInfo(name = "date_created", index = true)
     private long dateCreated;
 
-    @ColumnInfo(name = "date_updated")
+    @ColumnInfo(name = "date_updated", index = true)
     private long dateUpdated;
 
     public int getId() {
