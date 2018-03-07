@@ -4,9 +4,11 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "List")
+import java.util.Date;
+
+@Entity(tableName = "lists")
 public class List {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id", index = true)
     private int id;
 
@@ -26,13 +28,13 @@ public class List {
     private boolean pinned;
 
     @ColumnInfo(name = "date_created", index = true)
-    private long dateCreated;
+    private Date dateCreated;
 
     @ColumnInfo(name = "date_updated", index = true)
-    private long dateUpdated;
+    private Date dateUpdated;
 
     @ColumnInfo(name = "date_opened", index = true)
-    private long dateOpened;
+    private Date dateOpened;
 
     public int getId() {
         return id;
@@ -82,27 +84,42 @@ public class List {
         this.pinned = pinned;
     }
 
-    public long getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(long dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public long getDateUpdated() {
+    public Date getDateUpdated() {
         return dateUpdated;
     }
 
-    public void setDateUpdated(long dateUpdated) {
+    public void setDateUpdated(Date dateUpdated) {
         this.dateUpdated = dateUpdated;
     }
 
-    public long getDateOpened() {
+    public Date getDateOpened() {
         return dateOpened;
     }
 
-    public void setDateOpened(long dateOpened) {
+    public void setDateOpened(Date dateOpened) {
         this.dateOpened = dateOpened;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof List) {
+            List list = (List) object;
+            return list.getId() == getId()
+                    && list.getTitle().equals(getTitle())
+                    && list.getDescription().equals(getDescription())
+                    && list.getTags().equals(getTags())
+                    && list.getDateCreated().equals(getDateCreated())
+                    && list.getDateUpdated().equals(getDateUpdated())
+                    && list.getDateOpened().equals(getDateOpened());
+        }
+        return false;
     }
 }

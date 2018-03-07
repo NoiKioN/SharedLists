@@ -11,26 +11,22 @@ import com.nnightknights.sharedlists.list.interfaces.ListI;
 import java.util.ArrayList;
 
 public class DatabaseReader extends AsyncTask<QueryData, Integer, ListI[]> {
-    DatabaseManager databaseManager;
     SQLiteDatabase listsDatabase;
     ProgressBar progressBar;
 
     public DatabaseReader(Context context){
         super();
-        databaseManager = new DatabaseManager(context);
         progressBar = null;
     }
 
     public DatabaseReader(Context context, ProgressBar progressBar){
         super();
-        databaseManager = new DatabaseManager(context);
         this.progressBar = progressBar;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        listsDatabase = databaseManager.getReadableDatabase();
     }
 
     @Override
