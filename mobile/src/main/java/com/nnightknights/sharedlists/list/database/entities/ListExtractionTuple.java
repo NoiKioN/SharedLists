@@ -1,10 +1,13 @@
 package com.nnightknights.sharedlists.list.database.entities;
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-public class ListExtractionTuple {
+import com.nnightknights.sharedlists.list.database.ListI;
+
+import java.util.Date;
+
+public class ListExtractionTuple implements ListI {
     @PrimaryKey
     @ColumnInfo(name = "id")
     private int id;
@@ -15,19 +18,24 @@ public class ListExtractionTuple {
     @ColumnInfo(name = "description")
     private String description;
 
+    @ColumnInfo(name = "icon")
+    private String iconPath;
+
     @ColumnInfo(name = "tags")
     private String tags;
 
     @ColumnInfo(name = "date_created", index = true)
-    private long dateCreated;
+    private Date dateCreated;
 
     @ColumnInfo(name = "date_updated", index = true)
-    private long dateUpdated;
+    private Date dateUpdated;
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -48,6 +56,14 @@ public class ListExtractionTuple {
         this.description = description;
     }
 
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
     public String getTags() {
         return tags;
     }
@@ -56,19 +72,35 @@ public class ListExtractionTuple {
         this.tags = tags;
     }
 
-    public long getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(long dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public long getDateUpdated() {
+    public Date getDateUpdated() {
         return dateUpdated;
     }
 
-    public void setDateUpdated(long dateUpdated) {
+    public void setDateUpdated(Date dateUpdated) {
         this.dateUpdated = dateUpdated;
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if (object instanceof ListTuple){
+            ListTuple listTuple = (ListTuple) object;
+
+            return listTuple.getId() == getId()
+                    && listTuple.getTitle().equals(getTitle())
+                    && listTuple.getDescription().equals(getDescription())
+                    && listTuple.getIconPath().equals(getIconPath())
+                    && listTuple.getTags().equals(getTags())
+                    && listTuple.getDateCreated().equals(getDateCreated())
+                    && listTuple.getDateUpdated().equals(getDateUpdated());
+        }
+        return false;
     }
 }

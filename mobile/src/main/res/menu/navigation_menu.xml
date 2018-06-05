@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/pinned" android:id="@+id/pinned">
+        <menu>
+            <group android:id="@+id/group_pinned">
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/favorites" android:id="@+id/favorites">
+        <menu>
+            <group android:id="@+id/group_favorites">
+            </group>
+        </menu>
+    </item>
+</menu>

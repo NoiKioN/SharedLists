@@ -1,10 +1,8 @@
 package com.nnightknights.sharedlists;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,35 +24,29 @@ import com.joanzapata.iconify.fonts.MeteoconsModule;
 import com.joanzapata.iconify.fonts.SimpleLineIconsModule;
 import com.joanzapata.iconify.fonts.TypiconsModule;
 import com.joanzapata.iconify.fonts.WeathericonsModule;
+import com.nnightknights.sharedlists.list.database.DaggerDatabaseAccessComponent;
+import com.nnightknights.sharedlists.list.database.DatabaseAccessComponent;
+import com.nnightknights.sharedlists.list.database.DatabaseAccessModule;
+import com.nnightknights.sharedlists.list.database.DatabaseActions;
+import com.nnightknights.sharedlists.list.database.DatabaseReader;
+import com.nnightknights.sharedlists.list.database.entities.ListTitleFavoritePinnedTuple;
+import com.nnightknights.sharedlists.list.navigation_drawer.NavigationDrawerItemSelectedListener;
+import com.nnightknights.sharedlists.list.navigation_drawer.NavigationMenuBuilder;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
+    private DatabaseReader databaseReader = new DatabaseReader();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Iconify.with(new FontAwesomeModule())
-                .with(new EntypoModule())
-                .with(new TypiconsModule())
-                .with(new MaterialModule())
-                .with(new MaterialCommunityModule())
-                .with(new MeteoconsModule())
-                .with(new WeathericonsModule())
-                .with(new SimpleLineIconsModule())
-                .with(new IoniconsModule());
+
+        instantiateIconify();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent, getTheme()));
-        fab.setImageDrawable(new IconDrawable(getApplicationContext(), FontAwesomeIcons.fa_plus).colorRes(R.color.colorPrimary));
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Opening test activity.", Snackbar.LENGTH_LONG).show();
-            }
-        });
+        instantiateFloatingActionButton();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,9 +54,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.inflateMenu(R.menu.activity_main_drawer);
-        navigationView.setNavigationItemSelectedListener(this);
+        instantiateNavigationDrawerMenuItems();
     }
 
     @Override
@@ -84,6 +74,18 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void instantiateNavigationDrawerMenuItems() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        DatabaseAccessComponent databaseAccessComponent =
+                DaggerDatabaseAccessComponent.builder().databaseAccessModule(new DatabaseAccessModule(getApplicationContext())).build();
+        databaseAccessComponent.inject(databaseReader);
+
+        NavigationMenuBuilder navigationMenuBuilder = new NavigationMenuBuilder(navigationView, databaseReader);
+        NavigationDrawerItemSelectedListener navigationDrawerItemSelectedListener = new NavigationDrawerItemSelectedListener(this);
+        navigationMenuBuilder.buildMenu(navigationDrawerItemSelectedListener);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -99,28 +101,21 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+    private void instantiateIconify(){
+        Iconify.with(new FontAwesomeModule())
+                .with(new EntypoModule())
+                .with(new TypiconsModule())
+                .with(new MaterialModule())
+                .with(new MaterialCommunityModule())
+                .with(new MeteoconsModule())
+                .with(new WeathericonsModule())
+                .with(new SimpleLineIconsModule())
+                .with(new IoniconsModule());
+    }
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+    private void instantiateFloatingActionButton(){
+        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+        floatingActionButton.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent, getTheme()));
+        floatingActionButton.setImageDrawable(new IconDrawable(getApplicationContext(), FontAwesomeIcons.fa_plus).colorRes(R.color.colorPrimary));
     }
 }

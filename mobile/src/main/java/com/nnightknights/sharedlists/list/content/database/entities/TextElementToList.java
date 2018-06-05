@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.nnightknights.sharedlists.list.database.entities.List;
+import com.nnightknights.sharedlists.list.database.entities.ListTuple;
 
 @Entity(tableName = "text_element_to_list")
 public class TextElementToList {
@@ -14,7 +14,7 @@ public class TextElementToList {
     private int id;
 
     @ForeignKey(
-            entity = List.class,
+            entity = ListTuple.class,
             parentColumns = "id",
             childColumns = "list_id",
             onDelete = ForeignKey.CASCADE,

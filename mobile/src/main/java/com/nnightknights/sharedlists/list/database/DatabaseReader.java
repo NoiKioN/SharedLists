@@ -1,81 +1,56 @@
 package com.nnightknights.sharedlists.list.database;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
-import com.nnightknights.sharedlists.list.interfaces.ListI;
+import com.nnightknights.sharedlists.list.database.DAOs.ListsDAO;
+import com.nnightknights.sharedlists.list.database.entities.ListExtractionTuple;
+import com.nnightknights.sharedlists.list.database.entities.ListTuple;
 
-import java.util.ArrayList;
+import javax.inject.Inject;
 
-public class DatabaseReader extends AsyncTask<QueryData, Integer, ListI[]> {
-    SQLiteDatabase listsDatabase;
-    ProgressBar progressBar;
+public class DatabaseReader extends AsyncTask<Object, Integer, Object[]> {
+    public static final String TAG = "DatabaseReader";
 
-    public DatabaseReader(Context context){
+    @Inject
+    ListsDatabase listsDatabase;
+
+    private ListsDAO listsDAO;
+
+    public DatabaseReader() {
         super();
-        progressBar = null;
-    }
-
-    public DatabaseReader(Context context, ProgressBar progressBar){
-        super();
-        this.progressBar = progressBar;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        listsDAO = listsDatabase.getListsDAO();
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        if (progressBar != null) {
-            progressBar.setProgress(values[0]);
+    }
+
+    @Override
+    protected Object[] doInBackground(Object... dataIn) {
+        switch ((DatabaseActions) dataIn[0]){
+            case GET_LIST_TITLE_FAVORITE_PINNED_TUPLE:
+                return listsDAO.getListTitleFavoritePinnedTuple(10);
+            case GET_ALL_LISTS:
+                return listsDAO.getAllLists();
+            case GET_LIST_BY_INDEX:
+                return new ListTuple[] {listsDAO.getListByIndex((int) dataIn[1])};
+            case GET_LISTS_FOR_EXTRACTION:
+                return new ListExtractionTuple[] {listsDAO.getListForExtraction((int) dataIn[1])};
+            case GET_LISTS_FROM_INDEX:
+                return listsDAO.getListsFromIndex((int) dataIn[1], (int) dataIn[2]);
+            default:
+                return null;
         }
     }
 
     @Override
-    protected ListI[] doInBackground(QueryData... dataIn) {
-        QueryData queryData = dataIn[0];
-
-        Cursor cursor = null;
-        if(queryData.getQueryType() == QueryType.TYPE_NORMAL) {
-            cursor = listsDatabase.query(
-                    queryData.getDistinct(),
-                    queryData.getTableName(),
-                    queryData.getColumnNames(),
-                    queryData.getSelection(),
-                    queryData.getSelectionArguments(),
-                    queryData.getGroupBy(),
-                    queryData.getHaving(),
-                    queryData.getOrderBy(),
-                    queryData.getLimit());
-
-            java.util.List<String[]> dataOut = new ArrayList<>();
-            while(cursor.moveToNext()){
-                String[] data = new String[queryData.getColumnNames().length];
-
-                for (int index = 0; index < data.length; index++){
-                    data[index] = cursor.getString(cursor.getColumnIndexOrThrow(queryData.getColumnNames()[index]));
-                }
-
-                dataOut.add(data);
-            }
-        }
-
-        if (cursor != null) {
-            cursor.close();
-        }
-
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(ListI[] listI) {
-        listsDatabase.close();
-        super.onPostExecute(listI);
+    protected void onPostExecute(Object[] list) {
+        super.onPostExecute(list);
     }
 }

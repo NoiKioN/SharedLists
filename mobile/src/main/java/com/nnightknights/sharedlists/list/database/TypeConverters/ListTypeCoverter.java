@@ -4,10 +4,6 @@ import android.arch.persistence.room.TypeConverter;
 
 import java.util.Date;
 
-/**
- * Created by nnigh on 3/7/2018.
- */
-
 public class ListTypeCoverter {
     @TypeConverter
     public static Date dateFromTimestamp(Long date){

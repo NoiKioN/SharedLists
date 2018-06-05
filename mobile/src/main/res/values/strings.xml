@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="pinned">Pinned</string>
+    <string name="favorites">Favorites</string>
+    <string name="title_text_view_hint">Title</string>
+    <string name="description_text_view_hint">Description</string>
 </resources>

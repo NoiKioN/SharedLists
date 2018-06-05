@@ -1,13 +1,16 @@
 package com.nnightknights.sharedlists.list.database.entities;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+
+import com.nnightknights.sharedlists.list.database.ListI;
 
 import java.util.Date;
 
 @Entity(tableName = "lists")
-public class List {
+public class ListTuple implements ListI {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id", index = true)
     private int id;
@@ -18,14 +21,14 @@ public class List {
     @ColumnInfo(name = "description")
     private String description;
 
+    @ColumnInfo(name = "icon")
+    private String iconPath;
+
     @ColumnInfo(name = "tags")
     private String tags;
 
-    @ColumnInfo(name = "favorite", index = true)
-    private boolean favorite;
-
-    @ColumnInfo(name = "pinned", index = true)
-    private boolean pinned;
+    @Embedded
+    private ListUserSettingsTuple listUserSettingsTuple;
 
     @ColumnInfo(name = "date_created", index = true)
     private Date dateCreated;
@@ -36,10 +39,12 @@ public class List {
     @ColumnInfo(name = "date_opened", index = true)
     private Date dateOpened;
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -60,6 +65,14 @@ public class List {
         this.description = description;
     }
 
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
     public String getTags() {
         return tags;
     }
@@ -68,20 +81,12 @@ public class List {
         this.tags = tags;
     }
 
-    public boolean isFavorite() {
-        return favorite;
+    public ListUserSettingsTuple getListUserSettingsTuple() {
+        return listUserSettingsTuple;
     }
 
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
-
-    public boolean isPinned() {
-        return pinned;
-    }
-
-    public void setPinned(boolean pinned) {
-        this.pinned = pinned;
+    public void setListUserSettingsTuple(ListUserSettingsTuple listUserSettingsTuple) {
+        this.listUserSettingsTuple = listUserSettingsTuple;
     }
 
     public Date getDateCreated() {
@@ -110,15 +115,17 @@ public class List {
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof List) {
-            List list = (List) object;
-            return list.getId() == getId()
-                    && list.getTitle().equals(getTitle())
-                    && list.getDescription().equals(getDescription())
-                    && list.getTags().equals(getTags())
-                    && list.getDateCreated().equals(getDateCreated())
-                    && list.getDateUpdated().equals(getDateUpdated())
-                    && list.getDateOpened().equals(getDateOpened());
+        if (object instanceof ListTuple) {
+            ListTuple listTuple = (ListTuple) object;
+            return listTuple.getId() == getId()
+                    && listTuple.getTitle().equals(getTitle())
+                    && listTuple.getDescription().equals(getDescription())
+                    && listTuple.getIconPath().equals(getIconPath())
+                    && listTuple.getTags().equals(getTags())
+                    && listTuple.getListUserSettingsTuple().equals(getListUserSettingsTuple())
+                    && listTuple.getDateCreated().equals(getDateCreated())
+                    && listTuple.getDateUpdated().equals(getDateUpdated())
+                    && listTuple.getDateOpened().equals(getDateOpened());
         }
         return false;
     }
