@@ -7,7 +7,7 @@ import android.os.Bundle;
 public class IconImageChooserDialog extends DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        
+
         return super.onCreateDialog(savedInstanceState);
     }
 }
