@@ -1,6 +1,5 @@
 package com.nnightknights.sharedlists;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
+import com.nnightknights.sharedlists.list.list_creation_form.ImageChooserDialogOpener;
 import com.nnightknights.sharedlists.list.list_creation_form.UserPreferenceFormOnClickListener;
 
 import java.io.ByteArrayOutputStream;
@@ -72,19 +72,20 @@ public class CreateList extends Fragment {
         getViews();
 
         UserPreferenceFormOnClickListener userPreferenceFormOnClickListener =
-                new UserPreferenceFormOnClickListener(favoriteTextView, pinnedTextView, new ClickEventHandler());
+                new UserPreferenceFormOnClickListener(favoriteTextView, pinnedTextView, new UserPreferenceFormOnClickListenerClickEventHandler());
 
         favoriteTextView.setClickable(true);
         favoriteTextView.setOnClickListener(userPreferenceFormOnClickListener);
         pinnedTextView.setClickable(true);
         pinnedTextView.setOnClickListener(userPreferenceFormOnClickListener);
 
-
+        ImageChooserDialogOpener imageChooserDialogOpener =
+                new ImageChooserDialogOpener(coverImageView, iconImageView, new ImageChooserDialogOpenerClickEventHandler());
 
         coverImageView.setClickable(true);
-        coverImageView.setOnClickListener();
+        coverImageView.setOnClickListener(imageChooserDialogOpener);
         iconImageView.setClickable(true);
-        iconImageView.setOnClickListener();
+        iconImageView.setOnClickListener(imageChooserDialogOpener);
     }
 
     @Override
@@ -123,7 +124,7 @@ public class CreateList extends Fragment {
 
 
 
-    private class ClickEventHandler implements UserPreferenceFormOnClickListener.ClickEventHandler{
+    private class UserPreferenceFormOnClickListenerClickEventHandler implements UserPreferenceFormOnClickListener.ClickEventHandler{
         @Override
         public void toggleFavorite() {
             isFavorite = !isFavorite;
@@ -142,6 +143,18 @@ public class CreateList extends Fragment {
             } else {
                 pinnedTextView.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
             }
+        }
+    }
+
+    private class ImageChooserDialogOpenerClickEventHandler implements ImageChooserDialogOpener.ClickEventHandler {
+        @Override
+        public void openCoverImageChooserDialog() {
+
+        }
+
+        @Override
+        public void openIconImageChooserDialog() {
+
         }
     }
 }
