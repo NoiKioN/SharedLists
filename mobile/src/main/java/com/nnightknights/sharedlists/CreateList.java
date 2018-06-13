@@ -1,6 +1,5 @@
 package com.nnightknights.sharedlists;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -8,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Parcel;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +18,13 @@ import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
+import com.nnightknights.sharedlists.list.list_creation_form.ImageChooserDialog;
 import com.nnightknights.sharedlists.list.list_creation_form.ImageChooserDialogOpener;
 import com.nnightknights.sharedlists.list.list_creation_form.UserPreferenceFormOnClickListener;
 
 import java.io.ByteArrayOutputStream;
 
 public class CreateList extends Fragment {
-
     private AutoCompleteTextView titleAutoCompleteTextView;
     private MultiAutoCompleteTextView descriptionMultiAutoCompleteTextView;
     private ImageView iconImageView;
@@ -123,8 +123,6 @@ public class CreateList extends Fragment {
         return byteArrayOutputStream.toByteArray();
     }
 
-
-
     private class UserPreferenceFormOnClickListenerClickEventHandler implements UserPreferenceFormOnClickListener.ClickEventHandler{
         @Override
         public void toggleFavorite() {
@@ -150,11 +148,48 @@ public class CreateList extends Fragment {
     private class ImageChooserDialogOpenerClickEventHandler implements ImageChooserDialogOpener.ClickEventHandler {
         @Override
         public void openCoverImageChooserDialog() {
-
+            ImageChooserDialog coverImageChooserDialog = new ImageChooserDialog();
+            Bundle coverArgs = new Bundle();
+            coverArgs.putString(ImageChooserDialog.ArgumentNames.ImageType.name(), ImageChooserDialog.ImageType.COVER.name());
+            coverImageChooserDialog.setArguments(coverArgs);
+            coverImageChooserDialog.show(getFragmentManager(), "cover_chooser_dialog");
         }
 
         @Override
         public void openIconImageChooserDialog() {
+            ImageChooserDialog iconImageChooserDialog = new ImageChooserDialog();
+            Bundle iconArgs = new Bundle();
+            iconArgs.putString(ImageChooserDialog.ArgumentNames.ImageType.name(), ImageChooserDialog.ImageType.ICON.name());
+            iconImageChooserDialog.setArguments(iconArgs);
+            iconImageChooserDialog.show(getFragmentManager(), "icon_chooser_dialog");
+        }
+    }
+
+    private class ImageChooserDialogClickEventHandler implements ImageChooserDialog.ImageChooserEventHandler {
+        
+
+        @Override
+        public void chooseImageFromGallery() {
+
+        }
+
+        @Override
+        public void chooseIconFromBuiltInGallery() {
+
+        }
+
+        @Override
+        public void chooseNone() {
+
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
 
         }
     }
