@@ -1,17 +1,18 @@
-package com.nnightknights.sharedlists.list.list_creation_form;
+package com.nnightknights.sharedlists.list_creation.click_listeners;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.v4.app.DialogFragment;
 
-public class ImageChooserDialog extends DialogFragment{
+public class ImageChooserDialog extends DialogFragment {
     private final String iconGalleryChoose = "Choose from gallery";
     private final String iconIconGalleryChoose = "Choose from built-in icons";
     private final String coverGalleryChoose = "Choose from gallery";
     private final String coverChooseNone = "No cover picture";
+    private ClickEventHandler clickEventHandler;
+    private ImageChooserEventHandler imageChooserEventHandler;
 
     public enum ImageType{
         ICON, COVER
@@ -32,17 +33,20 @@ public class ImageChooserDialog extends DialogFragment{
             listItems = new String[] {coverGalleryChoose, coverChooseNone};
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setItems(listItems, new ClickEventHandler(imageType));
+        clickEventHandler = new ClickEventHandler(imageType);
+        builder.setItems(listItems, clickEventHandler);
         return builder.create();
+    }
+
+    public void setImageChooserEventHandler(ImageChooserEventHandler imageChooserEventHandler) {
+        this.imageChooserEventHandler = imageChooserEventHandler;
     }
 
     private class ClickEventHandler implements DialogInterface.OnClickListener{
         ImageType imageType;
-        ImageChooserEventHandler imageChooserEventHandler;
 
-        public ClickEventHandler(ImageType imageType, ImageChooserEventHandler imageChooserEventHandler){
+        public ClickEventHandler(ImageType imageType){
             this.imageType = imageType;
-            this.imageChooserEventHandler = imageChooserEventHandler;
         }
 
         @Override
@@ -66,7 +70,7 @@ public class ImageChooserDialog extends DialogFragment{
         }
     }
 
-    public interface ImageChooserEventHandler extends Parcelable{
+    public interface ImageChooserEventHandler{
         void chooseImageFromGallery();
 
         void chooseIconFromBuiltInGallery();

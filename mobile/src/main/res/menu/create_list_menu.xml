@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/create_list_action_save"
+        android:orderInCategory="3"
+        android:title="Save"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/create_list_action_favorite"
+        android:orderInCategory="1"
+        android:title="Favorite"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/create_list_action_pinned"
+        android:orderInCategory="2"
+        android:title="Pinned"
+        app:showAsAction="ifRoom"/>
+</menu>

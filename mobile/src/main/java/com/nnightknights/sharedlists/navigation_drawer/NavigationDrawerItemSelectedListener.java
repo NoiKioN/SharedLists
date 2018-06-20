@@ -1,4 +1,4 @@
-package com.nnightknights.sharedlists.list.navigation_drawer;
+package com.nnightknights.sharedlists.navigation_drawer;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;

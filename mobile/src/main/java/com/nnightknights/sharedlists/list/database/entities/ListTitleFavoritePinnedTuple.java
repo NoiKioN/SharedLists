@@ -14,6 +14,9 @@ public class ListTitleFavoritePinnedTuple implements ListI {
     @ColumnInfo(name = "icon")
     private String iconPath;
 
+    @ColumnInfo(name = "cover")
+    private String coverPath;
+
     @ColumnInfo(name = "favorite")
     private boolean favorite;
 
@@ -46,6 +49,14 @@ public class ListTitleFavoritePinnedTuple implements ListI {
         this.iconPath = iconPath;
     }
 
+    public String getCoverPath() {
+        return coverPath;
+    }
+
+    public void setCoverPath(String coverPath) {
+        this.coverPath = coverPath;
+    }
+
     public boolean isFavorite() {
         return favorite;
     }
@@ -70,6 +81,7 @@ public class ListTitleFavoritePinnedTuple implements ListI {
             return listTuple.getId() == getId()
                         && listTuple.getTitle().equals(title)
                         && listTuple.getIconPath().equals(getIconPath())
+                        && listTuple.getCoverPath().equals(getCoverPath())
                         && listTuple.getListUserSettingsTuple().isPinned() == pinned
                         && listTuple.getListUserSettingsTuple().isFavorite() == favorite;
         }

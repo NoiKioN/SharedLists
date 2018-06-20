@@ -1,4 +1,4 @@
-package com.nnightknights.sharedlists.list.navigation_drawer;
+package com.nnightknights.sharedlists.navigation_drawer;
 
 import android.support.design.widget.NavigationView;
 import android.util.Log;

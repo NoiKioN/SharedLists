@@ -1,9 +1,7 @@
-package com.nnightknights.sharedlists.list.list_creation_form;
+package com.nnightknights.sharedlists.list_creation.click_listeners;
 
 import android.view.View;
 import android.widget.TextView;
-
-import com.nnightknights.sharedlists.CreateList;
 
 public class UserPreferenceFormOnClickListener implements View.OnClickListener{
     private TextView favoriteTextView;

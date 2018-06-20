@@ -40,13 +40,13 @@ public interface ListsDAO {
     @Query(value = "SELECT * FROM lists WHERE id >= :listID LIMIT :limitValue")
     ListTuple[] getListsFromIndex(int listID, int limitValue);
 
-    @Query(value = "SELECT lists.id, lists.title, lists.icon, lists_user_settings.favorite, lists_user_settings.pinned " +
+    @Query(value = "SELECT lists.id, lists.title, lists.icon, lists.cover, lists_user_settings.favorite, lists_user_settings.pinned " +
             "FROM lists, lists_user_settings " +
             "ORDER BY lists_user_settings.pinned DESC," +
                 " lists_user_settings.favorite DESC " +
             "LIMIT :limitValue")
     ListTitleFavoritePinnedTuple[] getListTitleFavoritePinnedTuple(int limitValue);
 
-    @Query(value = "SELECT id, title, description, icon, tags, date_created, date_updated FROM lists WHERE id = :id")
+    @Query(value = "SELECT id, title, description, icon, cover, tags, date_created, date_updated FROM lists WHERE id = :id")
     ListExtractionTuple getListForExtraction(int id);
 }

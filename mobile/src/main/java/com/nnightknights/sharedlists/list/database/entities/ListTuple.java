@@ -24,6 +24,9 @@ public class ListTuple implements ListI {
     @ColumnInfo(name = "icon")
     private String iconPath;
 
+    @ColumnInfo(name = "cover")
+    private String coverPath;
+
     @ColumnInfo(name = "tags")
     private String tags;
 
@@ -71,6 +74,14 @@ public class ListTuple implements ListI {
 
     public void setIconPath(String iconPath) {
         this.iconPath = iconPath;
+    }
+
+    public String getCoverPath() {
+        return coverPath;
+    }
+
+    public void setCoverPath(String coverPath) {
+        this.coverPath = coverPath;
     }
 
     public String getTags() {
@@ -121,6 +132,7 @@ public class ListTuple implements ListI {
                     && listTuple.getTitle().equals(getTitle())
                     && listTuple.getDescription().equals(getDescription())
                     && listTuple.getIconPath().equals(getIconPath())
+                    && listTuple.getCoverPath().equals(getCoverPath())
                     && listTuple.getTags().equals(getTags())
                     && listTuple.getListUserSettingsTuple().equals(getListUserSettingsTuple())
                     && listTuple.getDateCreated().equals(getDateCreated())

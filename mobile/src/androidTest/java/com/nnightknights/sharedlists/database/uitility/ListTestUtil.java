@@ -22,6 +22,7 @@ public class ListTestUtil {
         listTuple.setTitle("Test ListTuple " + increment);
         listTuple.setDescription("Test Description " + increment);
         listTuple.setIconPath("Test icon path " + increment);
+        listTuple.setCoverPath("Test cover path" + increment);
         listTuple.setTags(String.format("test tag %d, test tag %d", increment, increment));
         listTuple.setListUserSettingsTuple(listUserSettingsTuple);
         listTuple.setDateCreated(new Date(System.currentTimeMillis()));

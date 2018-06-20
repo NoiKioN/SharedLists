@@ -10,4 +10,7 @@
     <string name="favorites">Favorites</string>
     <string name="title_text_view_hint">Title</string>
     <string name="description_text_view_hint">Description</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
