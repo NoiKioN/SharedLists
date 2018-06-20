@@ -149,6 +149,7 @@ public class CreateList extends DialogFragment {
                 return true;
 
             case android.R.id.home:
+                getActivity().getSupportFragmentManager().popBackStack();
                 dismiss();
                 return true;
         }
